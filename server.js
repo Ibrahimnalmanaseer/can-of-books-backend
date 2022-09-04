@@ -80,7 +80,7 @@ function BooksHandler(req,res){
     }
     else{
       res.send(result);
-     
+      console.log(result)
     };
 
 
@@ -92,11 +92,6 @@ function BooksHandler(req,res){
 })
 
 }
-
-
-
-
-
 
 
 
