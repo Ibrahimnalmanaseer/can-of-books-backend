@@ -4,7 +4,6 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const PORT = process.env.PORT || 3001;
-
 const app = express();
 app.use(cors());
 
@@ -23,9 +22,9 @@ const BooksSchema = new mongoose.Schema({
 const Book = mongoose.model('Book', BooksSchema);
 
 async function seedData(){
-  // const GoneWithwind= new Book({ title:"Gone with Wind",
-  // description:"Scarlett O'Hara, the beautiful, spoiled daughter of a well-to-do Georgia plantation owner, must use every means at her disposal to claw her way out of the poverty she finds herself in after Sherman's March to the Sea.",
-  // status:'available'})
+      const GoneWithwind= new Book({ title:"Gone with Wind",
+      description:"Scarlett O'Hara, the beautiful, spoiled daughter of a well-to-do Georgia plantation owner, must use every means at her disposal to claw her way out of the poverty she finds herself in after Sherman's March to the Sea.",
+      status:'available'})
 
      const HarryPotter=new Book({
       title:"Harry Potter and the Sorcerer's Stone",
