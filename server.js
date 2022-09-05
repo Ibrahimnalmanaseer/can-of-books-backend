@@ -11,10 +11,10 @@ const mongoose = require('mongoose');
 app.use(express.json());
 
 
+// process.env.MONGODP ||process.env.MONGOCLOUD
 
 
-
-mongoose.connect(process.env.MONGODP ||process.env.MONGOCLOUD  , {useNewUrlParser: true, useUnifiedTopology: true}); // 1 - connect mongoose with DB
+mongoose.connect('mongodb+srv://booksshop:zAvbMMC3rWjWV2Bm@cluster0.vgldg9x.mongodb.net/?retryWrites=true&w=majority',{useNewUrlParser: true, useUnifiedTopology: true}); // 1 - connect mongoose with DB
 
 const BooksSchema = new mongoose.Schema({
   title:String,
