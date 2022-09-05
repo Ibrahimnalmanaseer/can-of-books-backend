@@ -8,6 +8,7 @@ const app = express();
 app.use(cors());
 
 const mongoose = require('mongoose');
+app.use(express.json());
 
 mongoose.connect(process.env.MONGODP, {useNewUrlParser: true, useUnifiedTopology: true}); // 1 - connect mongoose with DB
 
@@ -53,14 +54,62 @@ async function seedData(){
 
 
 
-app.get('/test', (request, response) => {
-
-  response.send('test request received')
-
-})
-
 
 app.get('/books',BooksHandler)
+app.post('/addbook',NewBookHandler)
+app.delete('/deletebook/:id',deleteCatHandler);
+
+
+async function deleteCatHandler(req,res) {
+  const bookid= req.params.id;
+
+  Book.deleteOne({_id:bookid},(err,result)=>{
+    
+    
+    
+    Book.find({},(err,result)=>{
+
+      if (err){
+        console.log(err)
+      }
+      else{
+        res.send(result);
+        
+      };
+    })
+    
+  }
+    
+    )
+  
+
+}
+
+
+async function NewBookHandler(req,res){
+
+    const receivedData =req.body;
+    
+    await Book.create({
+
+      title:receivedData.title,
+      description:receivedData.description,
+      status:receivedData.status
+    })
+
+    Book.find({},(err,result)=>{
+
+      if (err){
+        console.log(err)
+      }
+      else{
+        res.send(result);
+        
+      };
+    })
+
+  };
+
 
 
 function BooksHandler(req,res){
@@ -74,14 +123,12 @@ function BooksHandler(req,res){
     }
     else{
       res.send(result);
-      console.log(result)
+      
     };
  
-
 })
 
 }
-
 
 
 
