@@ -1,6 +1,6 @@
 'use strict';
 
-require('dotenv').config();
+require('dotenv').config()
 const express = require('express');
 const cors = require('cors');
 const PORT = process.env.PORT || 3001;
@@ -9,7 +9,7 @@ app.use(cors());
 
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost:27017/12345-Books', {useNewUrlParser: true, useUnifiedTopology: true}); // 1 - connect mongoose with DB
+mongoose.connect(process.env.MONGODP, {useNewUrlParser: true, useUnifiedTopology: true}); // 1 - connect mongoose with DB
 
 const BooksSchema = new mongoose.Schema({
   title:String,
@@ -63,12 +63,6 @@ app.get('/test', (request, response) => {
 app.get('/books',BooksHandler)
 
 
-
-
-
-
-
-
 function BooksHandler(req,res){
 
 
@@ -82,12 +76,7 @@ function BooksHandler(req,res){
       res.send(result);
       console.log(result)
     };
-
-
-
-
-
-  
+ 
 
 })
 
