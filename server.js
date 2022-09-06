@@ -65,9 +65,66 @@ app.get('/', (req, res) => {
 app.get('/books',BooksHandler)
 app.post('/addbook',NewBookHandler)
 app.delete('/deletebook/:id',deleteCatHandler);
+app.put('/updatebook/:id',UpdateBookHandler)
 
 
-async function deleteCatHandler(req,res) {
+async function UpdateBookHandler(req,res){
+
+  const bookId=req.params.id;
+  console.log(bookId)
+  const updatedData=req.body;
+  Book.findByIdAndUpdate(updatedData.id,{
+    title:updatedData.title,
+    description:updatedData.description
+
+  },(err,result)=>{
+    
+    if (err) {
+
+      console.log(err)
+    }  
+
+    else{
+
+      Book.find({},(err,result)=>{
+
+        if (err){
+
+          console.log(err)
+        }
+        else{
+
+          res.send(result)
+        }
+
+      })
+    }
+  })
+
+
+  
+
+  
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function deleteCatHandler(req,res) {
   const bookid= req.params.id;
 
   Book.deleteOne({_id:bookid},(err,result)=>{
