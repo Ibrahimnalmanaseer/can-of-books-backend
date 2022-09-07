@@ -14,7 +14,7 @@ app.use(express.json());
 // process.env.MONGODP ||process.env.MONGOCLOUD
 
 
-mongoose.connect(process.env.MONGODP,{useNewUrlParser: true, useUnifiedTopology: true}); // 1 - connect mongoose with DB
+mongoose.connect(process.env.MONGOCLOUD,{useNewUrlParser: true, useUnifiedTopology: true}); // 1 - connect mongoose with DB
 
 const BooksSchema = new mongoose.Schema({
   title:String,
@@ -65,14 +65,14 @@ app.get('/', (req, res) => {
 
 app.get('/books',BooksHandler)
 app.post('/addbook',NewBookHandler)
-app.delete('/deletebook/:id',deleteCatHandler);
+app.delete('/deletebook/:id/:email',deleteCatHandler);
 app.put('/updatebook/:id',UpdateBookHandler)
 
 
 async function UpdateBookHandler(req,res){
 
-  const bookId=req.params.id;
-  console.log(bookId)
+  
+  const useremail=req.body.email;
   const updatedData=req.body;
   Book.findByIdAndUpdate(updatedData.id,{
     title:updatedData.title,
@@ -87,7 +87,7 @@ async function UpdateBookHandler(req,res){
 
     else{
 
-      Book.find({},(err,result)=>{
+      Book.find({email:useremail},(err,result)=>{
 
         if (err){
 
@@ -96,6 +96,7 @@ async function UpdateBookHandler(req,res){
         else{
 
           res.send(result)
+         
         }
 
       })
@@ -113,43 +114,38 @@ async function UpdateBookHandler(req,res){
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-function deleteCatHandler(req,res) {
+async function deleteCatHandler(req,res) {
   const bookid= req.params.id;
-
+  const useremail=req.params.email;
   Book.deleteOne({_id:bookid},(err,result)=>{
     
     
-    
-    Book.find({},(err,result)=>{
+    if (err){
 
-      if (err){
-        console.log(err)
-      }
-      else{
-        res.send(result);
-        
-      };
+      console.log(err)
+    }
+    else{
+
+      Book.find({email:useremail},(err,result)=>{
+
+        if (err){
+          console.log(err)
+        }
+        else{
+          res.send(result);
+          
+        };
+      })
+  
+     
+    }
+    
     })
+    
     
   }
     
-    )
-  
-
-}
-
+    
 
 async function NewBookHandler(req,res){
 
@@ -163,7 +159,7 @@ async function NewBookHandler(req,res){
       email:receivedData.email
     })
 
-    Book.find({},(err,result)=>{
+    Book.find({email:receivedData.email},(err,result)=>{
 
       if (err){
         console.log(err)
@@ -180,15 +176,16 @@ async function NewBookHandler(req,res){
 
 function BooksHandler(req,res){
 
-
-
-   Book.find({},(err,result)=>{
+  const email=req.query.email ;
+  
+   Book.find({email:email},(err,result)=>{
 
     if (err){
       console.log(err)
     }
     else{
       res.send(result);
+      console.log(result)
       
     };
  
@@ -201,3 +198,8 @@ function BooksHandler(req,res){
 
 
 app.listen(PORT, () => console.log(`listening on ${PORT}`));
+
+
+
+
+
