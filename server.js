@@ -14,12 +14,13 @@ app.use(express.json());
 // process.env.MONGODP ||process.env.MONGOCLOUD
 
 
-mongoose.connect('mongodb+srv://booksshop:zAvbMMC3rWjWV2Bm@cluster0.vgldg9x.mongodb.net/?retryWrites=true&w=majority',{useNewUrlParser: true, useUnifiedTopology: true}); // 1 - connect mongoose with DB
+mongoose.connect(process.env.MONGODP,{useNewUrlParser: true, useUnifiedTopology: true}); // 1 - connect mongoose with DB
 
 const BooksSchema = new mongoose.Schema({
   title:String,
   description:String,
-  status:String
+  status:String,
+  email:String,
 
 });
 
@@ -158,7 +159,8 @@ async function NewBookHandler(req,res){
 
       title:receivedData.title,
       description:receivedData.description,
-      status:receivedData.status
+      status:receivedData.status,
+      email:receivedData.email
     })
 
     Book.find({},(err,result)=>{
